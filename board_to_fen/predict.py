@@ -1,4 +1,5 @@
 import io
+import os
 from PIL import Image
 from .KerasNeuralNetwork import KerasNeuralNetwork
 from .utils import Decoder_FEN, Tiler
@@ -14,8 +15,8 @@ def get_fen_from_image_path(image_path, end_of_row='/', black_view=False) -> str
     image = Image.open(image_path)
     decoder = Decoder_FEN()
     net = KerasNeuralNetwork()
-    f = pkg_resources.open_text(saved_models, 'november_model')
-    net.load_model(f.name)
+    model_path = os.path.join(saved_models.__path__[0], 'november_model.keras')  # Update with .keras extension
+    net.load_model(model_path)
     tiler = Tiler()
     tiles = tiler.get_tiles(img=image)
     predictions = net.predict(tiles=tiles)
