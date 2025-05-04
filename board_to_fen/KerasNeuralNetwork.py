@@ -24,7 +24,10 @@ class KerasNeuralNetwork:
         print(f"loss:{loss}")
 
     def load_model(self, path):
-        self.model = tf.keras.models.load_model(path)
+        # Suppress the UserWarning about variable loading for inference
+        model = tf.keras.models.load_model(path, compile=False)
+        model.compile()
+        self.model = model
     
     def predict(self, tiles) -> list:
         for image in tiles:
